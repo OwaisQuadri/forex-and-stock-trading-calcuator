@@ -43,6 +43,8 @@ public class mainFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         marginField = new javax.swing.JTextField();
         usdToggle = new javax.swing.JToggleButton();
+        jLabel6 = new javax.swing.JLabel();
+        marginLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -69,7 +71,7 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(accountBalance);
-        accountBalance.setBounds(250, 80, 80, 24);
+        accountBalance.setBounds(250, 80, 80, 22);
 
         jLabel3.setText("Pips to Stoploss:");
         getContentPane().add(jLabel3);
@@ -82,16 +84,16 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(pipsToStoploss);
-        pipsToStoploss.setBounds(280, 170, 50, 24);
+        pipsToStoploss.setBounds(280, 170, 50, 22);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText("Shares:");
+        jLabel4.setText("Max Shares:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(70, 260, 100, 16);
+        jLabel4.setBounds(70, 250, 100, 16);
 
         outputLabel.setText("0");
         getContentPane().add(outputLabel);
-        outputLabel.setBounds(220, 260, 110, 16);
+        outputLabel.setBounds(220, 250, 110, 16);
 
         feedbackLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         feedbackLabel.setText("press \"CALCULATE\" when each entry has been filled");
@@ -105,7 +107,7 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(calculateButton);
-        calculateButton.setBounds(130, 210, 120, 32);
+        calculateButton.setBounds(130, 210, 120, 22);
 
         stockPrice.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         stockPrice.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +116,7 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(stockPrice);
-        stockPrice.setBounds(280, 140, 50, 24);
+        stockPrice.setBounds(280, 140, 50, 22);
 
         jLabel5.setText("Margin Rate:");
         getContentPane().add(jLabel5);
@@ -127,7 +129,7 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(marginField);
-        marginField.setBounds(260, 110, 70, 24);
+        marginField.setBounds(260, 110, 70, 22);
 
         usdToggle.setText("USD");
         usdToggle.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +138,16 @@ public class mainFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(usdToggle);
-        usdToggle.setBounds(160, 50, 70, 32);
+        usdToggle.setBounds(160, 50, 70, 22);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel6.setText("Margin:");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(87, 270, 80, 16);
+
+        marginLabel.setText("$0.00");
+        getContentPane().add(marginLabel);
+        marginLabel.setBounds(220, 270, 100, 16);
 
         setSize(new java.awt.Dimension(416, 367));
         setLocationRelativeTo(null);
@@ -200,15 +211,21 @@ void update() {
             if (maxShares < shares) {
                 shares = maxShares;
             }
+            //calc margin
+            double usedMargin = (shares*price)/margin;
             //valid
             DecimalFormat f = new DecimalFormat("0");
+            DecimalFormat dollars = new DecimalFormat("$#0.00");
+            marginLabel.setText(dollars.format(usedMargin));
             outputLabel.setText(f.format(shares));
+            
             feedbackLabel.setText("");
         } else {
             feedback = "Please enter real numbers into each field";
             //output to outputLabel and feedback
             //invalid
             outputLabel.setText("0");
+            marginLabel.setText("$0.00");
             feedbackLabel.setText(feedback);
         }
 
@@ -281,7 +298,9 @@ void update() {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField marginField;
+    private javax.swing.JLabel marginLabel;
     private javax.swing.JLabel outputLabel;
     private javax.swing.JTextField pipsToStoploss;
     private javax.swing.JTextField stockPrice;
